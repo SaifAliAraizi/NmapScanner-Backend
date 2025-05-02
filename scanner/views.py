@@ -37,13 +37,20 @@ class ScanView(APIView):
             html_path = os.path.join(html_dir, f"scan_{scan_record.id}.html")
 
             scan_args += ['-oX', xml_path]
-            process = subprocess.Popen(scan_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            
+            # Use bufsize=1 for line-buffered output
+            process = subprocess.Popen(
+                scan_args,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                bufsize=1  # This ensures line-buffered output
+            )
 
-            output_lines = []
-            for line in process.stdout:
-                output_lines.append(line)
-                scan_record.output = ''.join(output_lines)
-                scan_record.save()
+            # Read output line by line and save to database
+            for line in iter(process.stdout.readline, ''):
+                scan_record.output += line
+                scan_record.save(update_fields=['output'])
 
             xsltproc_path = shutil.which("xsltproc")
             if xsltproc_path:
@@ -52,9 +59,9 @@ class ScanView(APIView):
                 print("xsltproc not found")
 
             with open(xml_path, 'rb') as f:
-                scan_record.xml_file.save(f"scan_{scan_record.id}.xml", File(f), save=False)
+                scan_record.xml_file.save(f"scan_{scan_record.id}.xml", File(f))
             with open(html_path, 'rb') as f:
-                scan_record.html_file.save(f"scan_{scan_record.id}.html", File(f), save=False)
+                scan_record.html_file.save(f"scan_{scan_record.id}.html", File(f))
 
             scan_record.completed = True
             scan_record.save()
@@ -69,49 +76,56 @@ class ScanResultView(APIView):
         except ScanRecord.DoesNotExist:
             return Response({"error": "Scan not found"}, status=404)
 
-        # Common response data
-        response_data = {
-            "scan_id": scan_record.id,
-            "ip": scan_record.ip,
-            "scan_type": scan_record.scan_type,
-            "status": "completed" if scan_record.completed else "in_progress"
-        }
-
-        # Check if this is an SSE request by examining headers
-        is_sse = 'text/event-stream' in request.META.get('HTTP_ACCEPT', '')
-
-        if is_sse:
+        # Check for SSE request
+        if request.headers.get('Accept') == 'text/event-stream':
             if scan_record.completed:
                 return Response(
                     {"error": "Scan already completed"},
                     status=400,
                     content_type='application/json'
                 )
-                
+
             def event_stream():
-                last_output = ""
-                while True:
-                    try:
+                last_position = 0
+                try:
+                    while True:
                         scan_record.refresh_from_db()
-                        if scan_record.output != last_output:
-                            yield f"data: {scan_record.output[len(last_output):]}\n\n"
-                            last_output = scan_record.output
+                        current_output = scan_record.output
+                        
+                        # Send new output if available
+                        if len(current_output) > last_position:
+                            new_content = current_output[last_position:]
+                            # Split by lines and send each line separately
+                            for line in new_content.splitlines():
+                                if line.strip():  # Skip empty lines
+                                    yield f"data: {line}\n\n"
+                            last_position = len(current_output)
+                        
+                        # Check if scan is completed
                         if scan_record.completed:
                             yield "event: complete\ndata: {\"status\": \"completed\"}\n\n"
                             break
-                        sleep(1)
-                    except Exception as e:
-                        yield f"event: error\ndata: {str(e)}\n\n"
-                        break
+                            
+                        sleep(0.5)  # Reduced sleep time for more frequent updates
+                except Exception as e:
+                    yield f"event: error\ndata: {str(e)}\n\n"
 
             response = StreamingHttpResponse(
                 event_stream(),
                 content_type='text/event-stream'
             )
             response['Cache-Control'] = 'no-cache'
+            response['Connection'] = 'keep-alive'
             return response
 
-        # For regular requests
+        # Regular request response
+        response_data = {
+            "scan_id": scan_record.id,
+            "ip": scan_record.ip,
+            "scan_type": scan_record.scan_type,
+            "status": "completed" if scan_record.completed else "in_progress"
+        }
+        
         if scan_record.completed:
             response_data.update({
                 "output": scan_record.output,
