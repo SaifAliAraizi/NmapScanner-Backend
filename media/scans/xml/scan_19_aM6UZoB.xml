@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///C:/Program Files (x86)/Nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.95 scan initiated Thu May  1 12:21:01 2025 as: nmap -sT -T4 -sV -O -p 1-65535 -vv -oX &quot;D:\\university\\Final_Year\\Full-Stack App\\backend\\media\\scans\\xml\\scan_19.xml&quot; 192.168.91.130 -->
+<nmaprun scanner="nmap" args="nmap -sT -T4 -sV -O -p 1-65535 -vv -oX &quot;D:\\university\\Final_Year\\Full-Stack App\\backend\\media\\scans\\xml\\scan_19.xml&quot; 192.168.91.130" start="1746084061" startstr="Thu May  1 12:21:01 2025" version="7.95" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="65535" services="1-65535"/>
+<verbose level="2"/>
+<debugging level="0"/>
+<taskbegin task="ARP Ping Scan" time="1746084061"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.91.130" addrtype="ipv4"/>
+<address addr="00:0C:29:1A:B5:3D" addrtype="mac" vendor="VMware"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<taskend task="ARP Ping Scan" time="1746084061" extrainfo="1 total hosts"/>
+<taskbegin task="Parallel DNS resolution of 1 host." time="1746084061"/>
+<taskend task="Parallel DNS resolution of 1 host." time="1746084061"/>
+<taskbegin task="Connect Scan" time="1746084061"/>
+<taskprogress task="Connect Scan" time="1746084092" percent="12.42" remaining="219" etc="1746084311"/>
+<taskprogress task="Connect Scan" time="1746084122" percent="25.56" remaining="178" etc="1746084300"/>
+<taskprogress task="Connect Scan" time="1746084152" percent="38.70" remaining="145" etc="1746084296"/>
+<taskprogress task="Connect Scan" time="1746084182" percent="51.88" remaining="113" etc="1746084294"/>
+<taskprogress task="Connect Scan" time="1746084212" percent="64.94" remaining="82" etc="1746084294"/>
+<taskprogress task="Connect Scan" time="1746084242" percent="78.07" remaining="51" etc="1746084293"/>
+<taskend task="Connect Scan" time="1746084292" extrainfo="65535 total ports"/>
+<taskbegin task="Service scan" time="1746084293"/>
+<taskend task="Service scan" time="1746084299" extrainfo="6 services on 1 host"/>
+<taskbegin task="NSE" time="1746084300"/>
+<taskend task="NSE" time="1746084301"/>
+<taskbegin task="NSE" time="1746084301"/>
+<taskend task="NSE" time="1746084301"/>
+<host starttime="1746084061" endtime="1746084301"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.91.130" addrtype="ipv4"/>
+<address addr="00:0C:29:1A:B5:3D" addrtype="mac" vendor="VMware"/>
+<hostnames>
+</hostnames>
+<ports><extraports state="filtered" count="65529">
+<extrareasons reason="no-response" count="65529" proto="tcp" ports="1-21,23-79,81-110,112-138,140-442,444-32767,32769-65535"/>
+</extraports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="ssh" product="OpenSSH" version="2.9p2" extrainfo="protocol 1.99" method="probed" conf="10"><cpe>cpe:/a:openbsd:openssh:2.9p2</cpe></service></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="http" product="Apache httpd" version="1.3.20" extrainfo="(Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b" method="probed" conf="10"><cpe>cpe:/a:apache:http_server:1.3.20</cpe></service></port>
+<port protocol="tcp" portid="111"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="rpcbind" version="2" extrainfo="RPC #100000" method="probed" conf="10"/></port>
+<port protocol="tcp" portid="139"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="netbios-ssn" product="Samba smbd" extrainfo="workgroup: MYGROUP" method="probed" conf="10"><cpe>cpe:/a:samba:samba</cpe></service></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="https" product="Apache/1.3.20 (Unix)  (Red-Hat/Linux) mod_ssl/2.8.4 OpenSSL/0.9.6b" tunnel="ssl" method="probed" conf="10"/></port>
+<port protocol="tcp" portid="32768"><state state="open" reason="syn-ack" reason_ttl="0"/><service name="status" version="1" extrainfo="RPC #100024" method="probed" conf="10"/></port>
+</ports>
+<os><portused state="open" proto="tcp" portid="22"/>
+<portused state="closed" proto="udp" portid="35759"/>
+<osmatch name="Linux 2.4.9 - 2.4.18 (likely embedded)" accuracy="100" line="49261">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.4.X" accuracy="100"><cpe>cpe:/o:linux:linux_kernel:2.4</cpe></osclass>
+</osmatch>
+<osfingerprint fingerprint="OS:SCAN(V=7.95%E=4%D=5/1%OT=22%CT=%CU=35759%PV=Y%DS=1%DC=D%G=N%M=000C29%TM=&#xa;OS:681321CD%P=i686-pc-windows-windows)SEQ(SP=CA%GCD=1%ISR=CE%TI=Z%CI=Z%TS=7&#xa;OS:)OPS(O1=M5B4ST11NW0%O2=M5B4ST11NW0%O3=M5B4NNT11NW0%O4=M5B4ST11NW0%O5=M5B&#xa;OS:4ST11NW0%O6=M5B4ST11)WIN(W1=16A0%W2=16A0%W3=16A0%W4=16A0%W5=16A0%W6=16A0&#xa;OS:)ECN(R=Y%DF=Y%T=40%W=16D0%O=M5B4NNSNW0%CC=N%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+&#xa;OS:%F=AS%RD=0%Q=)T2(R=N)T3(R=Y%DF=Y%T=40%W=16A0%S=O%A=S+%F=AS%O=M5B4ST11NW0&#xa;OS:%RD=0%Q=)T4(R=Y%DF=Y%T=FF%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=FF%W=&#xa;OS:0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=FF%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T&#xa;OS:7(R=Y%DF=Y%T=FF%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=FF%IPL=164%UN&#xa;OS:=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=FF%CD=S)&#xa;"/>
+</os>
+<uptime seconds="9479" lastboot="Thu May  1 09:47:02 2025"/>
+<distance value="1"/>
+<tcpsequence index="202" difficulty="Good luck!" values="5D7895C2,5D540FEB,5DFC1DC0,5DD0ED3A,5E0D6F17,5D74EB08"/>
+<ipidsequence class="All zeros" values="0,0,0,0,0,0"/>
+<tcptssequence class="100HZ" values="E764E,E7658,E7663,E766E,E7679,E7683"/>
+<times srtt="9543" rttvar="13259" to="100000"/>
+</host>
+<runstats><finished time="1746084301" timestr="Thu May  1 12:25:01 2025" summary="Nmap done at Thu May  1 12:25:01 2025; 1 IP address (1 host up) scanned in 240.51 seconds" elapsed="240.51" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>
