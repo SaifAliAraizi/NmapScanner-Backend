@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///C:/Program Files (x86)/Nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.95 scan initiated Sun May  4 11:16:52 2025 as: nmap -sT -T4 -sV -O -p 1-65535 -vv -oX &quot;D:\\university\\Final_Year\\Full-Stack App\\backend\\media\\scans\\xml\\scan_36.xml&quot; 192.168.91.130 -->
+<nmaprun scanner="nmap" args="nmap -sT -T4 -sV -O -p 1-65535 -vv -oX &quot;D:\\university\\Final_Year\\Full-Stack App\\backend\\media\\scans\\xml\\scan_36.xml&quot; 192.168.91.130" start="1746339412" startstr="Sun May  4 11:16:52 2025" version="7.95" xmloutputversion="1.05">
+<scaninfo type="connect" protocol="tcp" numservices="65535" services="1-65535"/>
+<verbose level="2"/>
+<debugging level="0"/>
+<taskbegin task="ARP Ping Scan" time="1746339413"/>
+<hosthint><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.91.130" addrtype="ipv4"/>
+<address addr="00:0C:29:1A:B5:3D" addrtype="mac" vendor="VMware"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<taskend task="ARP Ping Scan" time="1746339413" extrainfo="1 total hosts"/>
+<taskbegin task="Parallel DNS resolution of 1 host." time="1746339413"/>
+<taskend task="Parallel DNS resolution of 1 host." time="1746339413"/>
+<taskbegin task="Connect Scan" time="1746339413"/>
+<taskprogress task="Connect Scan" time="1746339444" percent="12.57" remaining="216" etc="1746339660"/>
+<taskprogress task="Connect Scan" time="1746339474" percent="25.76" remaining="176" etc="1746339650"/>
+<taskprogress task="Connect Scan" time="1746339504" percent="38.96" remaining="143" etc="1746339647"/>
+<taskprogress task="Connect Scan" time="1746339534" percent="52.20" remaining="111" etc="1746339645"/>

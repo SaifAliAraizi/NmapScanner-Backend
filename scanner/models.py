@@ -2,6 +2,19 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # saif@2724944! -> superuser pass
+
+class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
+    class Meta:
+        app_label = 'scanner'
+        verbose_name = 'CustomUser'
+        verbose_name_plural = 'CustomUsers'
+
+
 class ScanRecord(models.Model):
     ip = models.GenericIPAddressField()
     scan_type = models.CharField(max_length=50)
@@ -10,6 +23,12 @@ class ScanRecord(models.Model):
     html_file = models.FileField(upload_to='scans/html/', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     completed = models.BooleanField(default=False)
+    user = models.ForeignKey(
+        CustomUser,  # Now this is defined above
+        on_delete=models.CASCADE, 
+        null=True, 
+        related_name='scans'
+    )
 
     class Meta:
         db_table = 'scanner_scanrecord'
@@ -28,14 +47,3 @@ class Contact(models.Model):
 
     def __str__(self):
         return f'Contact Message from {self.name}'
-
-class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
-
-    class Meta:
-        app_label = 'scanner'
-        verbose_name = 'CustomUser'
-        verbose_name_plural = 'CustomUsers'

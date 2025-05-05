@@ -10,16 +10,26 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 import os, shutil, threading, subprocess
 from time import sleep
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class ScanView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         ip = request.data.get("ip")
         scan_type = request.data.get("scanType")
-
+        
         if not ip:
             return Response({"error": "IP address is required"}, status=400)
-
-        scan_record = ScanRecord.objects.create(ip=ip, scan_type=scan_type)
+        
+        # Associate scan with the logged-in user
+        scan_record = ScanRecord.objects.create(
+            ip=ip, 
+            scan_type=scan_type,
+            user=request.user  # Add this line to associate scan with user
+        )
 
         def run_scan():
             scan_args = {
@@ -171,3 +181,14 @@ class LoginView(APIView):
             return Response({'error': 'Incorrect password'}, status=401)
         else:
             return Response({'error': 'User not found. Please sign up.'}, status=404)
+        
+class CheckAuthView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            'authenticated': True,
+            'username': request.user.username,
+            'email': request.user.email
+        })
