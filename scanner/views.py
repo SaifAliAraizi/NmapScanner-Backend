@@ -169,18 +169,27 @@ class LoginView(APIView):
         email = request.data.get("email")
         password = request.data.get("password")
 
+        # Check if email and password are provided
+        if not email or not password:
+            return Response({'error': 'Email and password are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Try to authenticate the user manually
         user = authenticate(request, email=email, password=password)
-        if user:
-            refresh = RefreshToken.for_user(user)
-            return Response({
-                'message': 'Login successful',
-                'refresh': str(refresh),
-                'access': str(refresh.access_token)
-            }, status=200)
-        elif CustomUser.objects.filter(email=email).exists():
-            return Response({'error': 'Incorrect password'}, status=401)
+
+        if user is not None:
+            if user.is_active:
+                # Generate tokens using the RefreshToken class
+                refresh = RefreshToken.for_user(user)
+                return Response({
+                    'message': 'Login successful',
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token)
+                }, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'User is inactive.'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
-            return Response({'error': 'User not found. Please sign up.'}, status=404)
+            return Response({'error': 'Invalid email or password.'}, status=status.HTTP_401_UNAUTHORIZED)
+
         
 class CheckAuthView(APIView):
     authentication_classes = [JWTAuthentication]

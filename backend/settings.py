@@ -135,6 +135,11 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
+AUTHENTICATION_BACKENDS = [
+    'scanner.authentication.EmailBackend',  # Add your custom backend here
+    'django.contrib.auth.backends.ModelBackend',  # You can leave the default backend for admin purposes
+]
+
 AUTH_USER_MODEL = 'scanner.CustomUser'
 
 # Password validation
