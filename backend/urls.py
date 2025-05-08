@@ -10,9 +10,12 @@ from backend.settings import BASE_DIR
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('scanner.urls')),
-    # Add catch-all route for React app
-    re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
+
+    # Static files required for React
     re_path(r'^(manifest\.json|favicon\.ico|logo192\.png|logo512\.png)$', static_serve, {
         'document_root': os.path.join(BASE_DIR, 'nmapscanner/build'),
     }),
+
+    # Catch-all for React frontend routes
+    re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
 ]

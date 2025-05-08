@@ -14,4 +14,3 @@ class EmailBackend(ModelBackend):
         except CustomUser.DoesNotExist:
             print(f"User with email {email} does not exist.")
         return None
-
